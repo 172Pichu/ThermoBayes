@@ -1,0 +1,38 @@
+ThermoBayes Task-1 comparison package
+
+Modified:
+- src/samplers.py
+  * preserves original sgnht and sgnht_vectorized trajectories
+  * adds POSTERIORS-order plain/vectorized/compiled variants
+  * adds POSTERIORS native inplace ablation
+  * records update order, vectorization, gradient calls, compile/inplace metadata
+- src/cli.py
+  * registers all new method names with the existing SGNHTConfig pipeline
+- src/controllers/run_single_fold.py
+  * classifies/names new methods and promotes implementation labels to metrics.csv
+- src/controllers/summarize_results.py
+  * groups summaries by update order, vectorization, compile, and inplace labels
+
+Added:
+- scripts/run_task1_comparison.py
+- tests/conftest.py
+- tests/test_sgnht_update_orders.py
+- README_TASK1_CN.md
+
+Validation performed in the packaging environment:
+- Python compilation: passed
+- pytest: 3 passed, 1 skipped (optional POSTERIORS parity test skipped because package unavailable)
+- Yacht CLI smoke test: passed for all three new ThermoBayes POSTERIORS-order variants
+- comparison runner and summary generation smoke test: passed
+- original plain/vectorized SGNHT output checked against the pre-change implementation: bitwise identical
+
+Task-1 T0-T4 controlled runtime decomposition:
+- src/benchmarks/t0_t4_ablation.py
+- scripts/run_t0_t4_ablation.py
+- tests/test_t0_t4_ablation.py
+- README_T0_T4_CN.md
+
+The T0-T4 runner emits raw repeats, median summary, causal decomposition,
+numerical parity, environment metadata and an auto-generated Markdown report.
+T3 is native POSTERIORS out-of-place (the default endpoint); T4 is the
+inplace=True optimization control.
